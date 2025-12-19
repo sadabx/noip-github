@@ -53,7 +53,7 @@ Ensure your repository contains these files (found in this repo):
 Since No-IP checks for bots, we use a session cookie to bypass the login screen.
 1. Log in to [No-IP.com](https://www.noip.com/login) on your browser and check **"Keep me logged in"**.
 2. Open Developer Tools (`F12`) > **Application** tab > **Cookies**.
-3. Find the cookie named `nexus_session` (or `session`).
+3. Find the cookie named `laravel_session` (or `session`).
 4. Copy its **Value** (a long string of random characters).
 
 #### Step 2: Add GitHub Secrets
