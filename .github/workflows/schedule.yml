@@ -2,8 +2,8 @@ name: No-IP Auto Renew
 
 on:
   schedule:
-    - cron: '0 0 */15 * *' # Runs every 15 days at midnight
-  workflow_dispatch:       # Allows you to click "Run" manually to test it
+    - cron: '0 0 */15 * *' # Runs every 15 days
+  workflow_dispatch:       # Allows manual testing
 
 jobs:
   renew:
@@ -23,6 +23,6 @@ jobs:
 
       - name: Run Script
         env:
-          NOIP_USERNAME: ${{ secrets.NOIP_USERNAME }}
-          NOIP_PASSWORD: ${{ secrets.NOIP_PASSWORD }}
+          # We only need the cookie now!
+          NOIP_COOKIE: ${{ secrets.NOIP_COOKIE }}
         run: python renew.py
