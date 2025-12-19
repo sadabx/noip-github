@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect No-IP Domain with GitHub Pages | Tutorial</title>
+    <title>No-IP Toolkit: Hosting & Auto-Renewal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Base Styles */
         :root {
             --primary: #4078c0;
-            --secondary: #6cc644;
+            --secondary: #6cc644; /* Green */
+            --accent: #f66a0a;    /* Orange for No-IP */
+            --telegram: #0088cc;  /* Telegram Blue */
             --dark: #333;
             --light: #f5f5f5;
             --gray: #767676;
@@ -20,6 +22,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
         }
         
         body {
@@ -65,7 +68,7 @@
         }
         
         .logo-icon {
-            color: var(--primary);
+            color: var(--accent);
         }
         
         nav ul {
@@ -77,32 +80,39 @@
         nav a {
             font-weight: 500;
             transition: color 0.3s;
+            color: var(--dark);
         }
         
         nav a:hover {
-            color: var(--secondary);
+            color: var(--primary);
         }
         
         /* Hero Section */
         .hero {
-            padding: 80px 0;
+            padding: 100px 0;
             text-align: center;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
         
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 20px;
             color: var(--dark);
         }
         
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             max-width: 700px;
             margin: 0 auto 30px;
             color: var(--gray);
         }
         
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
         .cta-button {
             display: inline-block;
             background-color: var(--primary);
@@ -110,35 +120,47 @@
             padding: 12px 30px;
             border-radius: 5px;
             font-weight: 600;
-            transition: background-color 0.3s;
+            transition: transform 0.2s, background-color 0.3s;
         }
         
         .cta-button:hover {
             background-color: #3668a8;
+            transform: translateY(-2px);
         }
-        
-        /* Steps Section */
-        .steps {
-            padding: 80px 0;
+
+        .cta-button.secondary {
             background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .cta-button.secondary:hover {
+            background-color: #eef6ff;
         }
         
+        /* Generic Section Styles */
+        section {
+            padding: 80px 0;
+        }
+
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
         
         .section-title h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
         }
         
         .section-title p {
             color: var(--gray);
             max-width: 600px;
             margin: 0 auto;
+            font-size: 1.1rem;
         }
-        
+
+        /* Steps Grid */
         .steps-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -146,11 +168,13 @@
         }
         
         .step {
-            background-color: var(--light);
-            border-radius: 8px;
+            background-color: white;
+            border-radius: 12px;
             padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             transition: transform 0.3s;
+            border-top: 5px solid var(--primary);
+            position: relative;
         }
         
         .step:hover {
@@ -158,7 +182,9 @@
         }
         
         .step-number {
-            display: inline-block;
+            position: absolute;
+            top: -20px;
+            left: 20px;
             background-color: var(--primary);
             color: white;
             width: 40px;
@@ -167,25 +193,63 @@
             text-align: center;
             line-height: 40px;
             font-weight: 700;
-            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(64, 120, 192, 0.4);
         }
         
         .step h3 {
+            margin-top: 10px;
             margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* Specific Styles for Bot Section */
+        #bot {
+            background-color: #f0f8ff; /* Light Alice Blue */
         }
         
+        #bot .step {
+            border-top-color: var(--accent);
+        }
+
+        #bot .step-number {
+            background-color: var(--accent);
+            box-shadow: 0 4px 10px rgba(246, 106, 10, 0.4);
+        }
+        
+        .code-block {
+            background-color: #2d333b;
+            color: #adbac7;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 5px;
+        }
+
+        .badge.telegram { background-color: #e3f2fd; color: var(--telegram); }
+        .badge.github { background-color: #f0f0f0; color: #333; }
+
         /* Video Section */
         .video-section {
-            padding: 80px 0;
-            background-color: #f9f9f9;
+            background-color: white;
         }
         
         .video-container {
             max-width: 800px;
             margin: 0 auto;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         }
         
         .video-wrapper {
@@ -203,44 +267,9 @@
             height: 100%;
             border: 0;
         }
-        
-        .video-info {
-            background-color: white;
-            padding: 20px;
-        }
-        
-        .video-info h3 {
-            margin-bottom: 10px;
-        }
-        
-        .video-info p {
-            color: var(--gray);
-            margin-bottom: 15px;
-        }
-        
-        .video-actions {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .video-button {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background-color: var(--light);
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-        
-        .video-button:hover {
-            background-color: #e9e9e9;
-        }
-        
+
         /* FAQ Section */
         .faq {
-            padding: 80px 0;
             background-color: white;
         }
         
@@ -250,20 +279,25 @@
         }
         
         .faq-item {
-            margin-bottom: 20px;
-            border: 1px solid #e1e1e1;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
             border-radius: 8px;
             overflow: hidden;
         }
         
         .faq-question {
             padding: 20px;
-            background-color: #f9f9f9;
+            background-color: #fff;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        
+        .faq-question:hover {
+            background-color: #f9f9f9;
         }
         
         .faq-answer {
@@ -271,6 +305,8 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s, padding 0.3s;
+            background-color: #f9f9f9;
+            color: var(--gray);
         }
         
         .faq-item.active .faq-answer {
@@ -282,7 +318,7 @@
         footer {
             background-color: var(--dark);
             color: white;
-            padding: 50px 0 20px;
+            padding: 60px 0 20px;
         }
         
         .footer-content {
@@ -295,6 +331,7 @@
         .footer-column h3 {
             margin-bottom: 20px;
             font-size: 1.2rem;
+            color: #fff;
         }
         
         .footer-column ul {
@@ -306,7 +343,7 @@
         }
         
         .footer-column a {
-            color: #ccc;
+            color: #aaa;
             transition: color 0.3s;
         }
         
@@ -318,7 +355,7 @@
             text-align: center;
             padding-top: 20px;
             border-top: 1px solid #444;
-            color: #999;
+            color: #888;
             font-size: 0.9rem;
         }
         
@@ -326,203 +363,192 @@
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                gap: 20px;
-            }
-            
-            nav ul {
                 gap: 15px;
             }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .video-actions {
-                flex-direction: column;
-            }
+            .hero h1 { font-size: 2rem; }
+            .btn-group { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <span class="logo-icon">🌐</span>
-                    <span>No-IP + GitHub Pages</span>
+                    <span class="logo-icon"><i class="fa-solid fa-cloud-bolt"></i></span>
+                    <span>No-IP Toolkit</span>
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="#steps">Steps</a></li>
+                        <li><a href="#hosting">Hosting Guide</a></li>
+                        <li><a href="#bot">Auto-Renewer Bot</a></li>
                         <li><a href="#video">Video</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#resources">Resources</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Connect Your No-IP Domain to GitHub Pages</h1>
-            <p>A step-by-step tutorial showing you how to use your No-IP dynamic DNS domain with GitHub Pages for free hosting.</p>
-            <a href="#video" class="cta-button">Watch Tutorial</a>
+            <h1>The Complete No-IP Companion</h1>
+            <p>Host your website for free on GitHub Pages and keep your `ddns.net` domain active forever with our auto-renewal bot.</p>
+            <div class="btn-group">
+                <a href="#hosting" class="cta-button">Part 1: Setup Hosting</a>
+                <a href="#bot" class="cta-button secondary">Part 2: Setup Bot</a>
+            </div>
         </div>
     </section>
 
-    <!-- Steps Section -->
-    <section class="steps" id="steps">
+    <section class="steps" id="hosting">
         <div class="container">
             <div class="section-title">
-                <h2>How to Connect No-IP with GitHub Pages</h2>
-                <p>Follow these simple steps to get your custom domain working with GitHub Pages</p>
+                <h2>Part 1: Connect No-IP to GitHub Pages</h2>
+                <p>Turn your static repository into a live website with a custom domain.</p>
             </div>
             <div class="steps-container">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3>Set Up Your GitHub Pages Repository</h3>
-                    <p>Create a new repository on GitHub or use an existing one. Enable GitHub Pages in the repository settings and choose your publishing source.</p>
+                    <h3>Setup Repository</h3>
+                    <p>Go to your Repo <b>Settings > Pages</b>. Enable GitHub Pages and select your branch (e.g., `main`) as the source.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3>Configure Your No-IP Domain</h3>
-                    <p>Log in to your No-IP account and navigate to the DNS management section. Update your DNS records to point to GitHub's servers.</p>
+                    <h3>Configure DNS</h3>
+                    <p>Log in to No-IP. Create a <b>CNAME Record</b> for your domain pointing to your GitHub URL (e.g., `user.github.io`).</p>
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3>Add CNAME File to Your Repository</h3>
-                    <p>Create a file named "CNAME" in your repository (without any extension) and add your No-IP domain name as the content.</p>
+                    <h3>Add CNAME File</h3>
+                    <p>Create a file named <code>CNAME</code> (no extension) in your repo root. Inside, write only your domain name.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">4</div>
-                    <h3>Update GitHub Pages Settings</h3>
-                    <p>In your GitHub repository settings, under the GitHub Pages section, add your custom domain and save the changes.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <h3>Wait for DNS Propagation</h3>
-                    <p>DNS changes can take up to 24 hours to propagate globally. Be patient and check back later to see if your site is accessible.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">6</div>
-                    <h3>Test Your Configuration</h3>
-                    <p>Once propagation is complete, visit your No-IP domain in a browser to verify that your GitHub Pages site loads correctly.</p>
+                    <h3>Verify Settings</h3>
+                    <p>Back in GitHub Pages settings, enter your custom domain and click Save. Check "Enforce HTTPS" when ready.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Video Section -->
+    <section class="steps" id="bot">
+        <div class="container">
+            <div class="section-title">
+                <h2>Part 2: Auto-Renewer Bot Setup</h2>
+                <p>Never lose your free domain again. This bot confirms your hostname every 15 days.</p>
+            </div>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3><span class="badge github">Browser</span> Get Session Cookie</h3>
+                    <p>Log in to No-IP and check "Keep me logged in". Press <code>F12</code> > <b>Application</b> > <b>Cookies</b>.</p>
+                    <div class="code-block">Copy value of: laravel_session</div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3><span class="badge telegram">Telegram</span> Create Alert Bot</h3>
+                    <p>Message <b>@BotFather</b> on Telegram to create a new bot and get your <code>Token</code>.</p>
+                    <p>Message <b>@userinfobot</b> to get your personal <code>Chat ID</code>.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3><span class="badge github">GitHub</span> Add Secrets</h3>
+                    <p>Go to Repo <b>Settings > Secrets > Actions</b>. Add these 3 secrets:</p>
+                    <ul>
+                        <li><code>NOIP_COOKIE</code></li>
+                        <li><code>TELEGRAM_TOKEN</code></li>
+                        <li><code>TELEGRAM_CHAT_ID</code></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3><span class="badge github">Action</span> Activate</h3>
+                    <p>Go to the <b>Actions</b> tab. Select <b>No-IP Auto Renew</b> and click <b>Run Workflow</b> to test.</p>
+                    <p><small><i>It will now run automatically every 15 days!</i></small></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="video-section" id="video">
         <div class="container">
             <div class="section-title">
-                <h2>Watch the Complete Tutorial</h2>
-                <p>Follow along with our detailed video guide to connect your No-IP domain with GitHub Pages</p>
+                <h2>Video Tutorial</h2>
+                <p>Visual learner? Watch the full setup guide.</p>
             </div>
             <div class="video-container">
                 <div class="video-wrapper">
-                    <!-- Replace VIDEO_ID with your actual YouTube video ID -->
                     <iframe src="https://www.youtube.com/embed/g1bgefvaXjQ" 
                             title="YouTube video player" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             allowfullscreen>
                     </iframe>
                 </div>
-                <div class="video-info">
-                    <h3>No-IP + GitHub Pages: Complete Setup Guide</h3>
-                    <p>In this tutorial, we'll walk through the entire process of connecting your No-IP domain to GitHub Pages, from DNS configuration to verification.</p>
-                   
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- FAQ Section -->
     <section class="faq" id="faq">
         <div class="container">
             <div class="section-title">
-                <h2>Frequently Asked Questions</h2>
-                <p>Common questions about connecting No-IP domains with GitHub Pages</p>
+                <h2>FAQ</h2>
             </div>
             <div class="faq-container">
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>Why would I use No-IP with GitHub Pages?</span>
+                        <span>Why do I need the Telegram Bot?</span>
                         <span>+</span>
                     </div>
                     <div class="faq-answer">
-                        <p>No-IP provides free dynamic DNS services, allowing you to use a custom domain name even if you don't have a static IP address. Combining this with GitHub Pages gives you free hosting with a custom domain.</p>
+                        <p>Session cookies eventually expire. Without the bot, the script would just fail silently. With the bot, you get an instant message on your phone telling you to update the cookie!</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>How long does DNS propagation take?</span>
+                        <span>Is this safe?</span>
                         <span>+</span>
                     </div>
                     <div class="faq-answer">
-                        <p>DNS changes typically take between a few minutes to 24 hours to propagate globally. This depends on your location, your ISP, and the TTL (Time to Live) settings of the DNS records.</p>
+                        <p>Yes. Your cookie and Telegram tokens are stored in GitHub Secrets, which are encrypted. They are never visible in the code.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>Can I use HTTPS with my No-IP domain on GitHub Pages?</span>
+                        <span>How often does it run?</span>
                         <span>+</span>
                     </div>
                     <div class="faq-answer">
-                        <p>Yes, GitHub Pages supports HTTPS for custom domains. After setting up your domain, you can enable the "Enforce HTTPS" option in your repository's GitHub Pages settings.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What if my No-IP domain stops working?</span>
-                        <span>+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>No-IP free domains require confirmation every 30 days to remain active. Make sure to confirm your domain when prompted, or consider upgrading to a paid plan for permanent domains.</p>
+                        <p>The schedule is set to run every 15 days. No-IP requires confirmation every 30 days, so this keeps you safely within the limit.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="resources">
+    <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>Resources</h3>
                     <ul>
-                        <li><a href="https://pages.github.com" target="_blank">GitHub Pages</a></li>
-                        <li><a href="https://www.noip.com" target="_blank">No-IP Website</a></li>
-                        <li><a href="https://docs.github.com/en/pages" target="_blank">GitHub Pages Docs</a></li>
+                        <li><a href="https://github.com/sadabx/noip-github" target="_blank">View on GitHub</a></li>
+                        <li><a href="https://www.noip.com" target="_blank">No-IP Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h3>Tutorials</h3>
+                    <h3>Credits</h3>
                     <ul>
-                        <li><a href="#">Setting up GitHub Pages</a></li>
-                        <li><a href="#">Configuring No-IP DNS</a></li>
-                        <li><a href="#">Troubleshooting Common Issues</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Connect</h3>
-                    <ul>
-                        <li><a href="#">YouTube Channel</a></li>
-                        <li><a href="#">GitHub Profile</a></li>
-                        <li><a href="#">Twitter</a></li>
+                        <li>Created by <a href="https://github.com/sadabx">Sadab</a></li>
+                        <li>Powered by GitHub Actions</li>
                     </ul>
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2023 No-IP + GitHub Pages Tutorial. This is a demo website for educational purposes.</p>
+                <p>&copy; 2025 No-IP Toolkit. Educational purposes only.</p>
             </div>
         </div>
     </footer>
