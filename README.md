@@ -1,54 +1,58 @@
-# No-IP Auto Renewer (GitHub Actions)
+# Connect No-IP Domain to GitHub Pages
 
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Automated-blue?style=for-the-badge&logo=github-actions)
-![Python](https://img.shields.io/badge/Python-3.x-yellow?style=for-the-badge&logo=python)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![No-IP](https://img.shields.io/badge/No--IP-Dynamic_DNS-orange?style=flat-square&logo=rss)
+![GitHub Pages](https://img.shields.io/badge/Hosting-GitHub_Pages-blue?style=flat-square&logo=github)
+![Guide](https://img.shields.io/badge/Type-Tutorial-green?style=flat-square)
 
-**Automate the 30-day confirmation for free No-IP hostnames using GitHub Actions.**
-
-Free No-IP accounts require you to manually confirm your hostname every 30 days to keep it active. This repository contains a script and a GitHub Actions workflow that automatically logs in and confirms your hosts for you, so you never lose your domain.
+> A step-by-step tutorial showing you how to use your No-IP dynamic DNS domain with GitHub Pages for free hosting.
 
 ---
 
-## 🚀 Features
-- **Zero Maintenance**: Runs automatically on a schedule (e.g., every 2 weeks).
-- **Serverless**: Uses GitHub Actions, so you don't need a Raspberry Pi or always-on server.
-- **Secure**: Credentials are stored in GitHub Secrets, never in the code.
-- **Notifications**: (Optional) Can be configured to notify you on failure.
+## 📖 Overview
+This guide explains how to connect a free hostname (e.g., `my-site.ddns.net`) from **No-IP** to a static website hosted on **GitHub Pages**.
+
+[**▶️ Watch the Video Tutorial**](https://www.youtube.com/embed/g1bgefvaXjQ)
 
 ---
 
-## 🛠️ Setup Guide
+## 🚀 Setup Guide
 
-### 1. Fork or Import this Repository
-If you haven't already, fork this repository to your own GitHub account or push this code to your private repo.
+### 1️⃣ Set Up Your GitHub Pages Repository
+* Create a new repository on GitHub or use an existing one.
+* Go to **Settings** > **Pages**.
+* Enable GitHub Pages and choose your publishing source (e.g., `main` branch).
 
-### 2. Configure Secrets
-To keep your No-IP login details safe, do **not** put them in the code. Use GitHub Secrets:
+### 2️⃣ Configure Your No-IP Domain
+* Log in to your **[No-IP Account](https://www.noip.com/login)**.
+* Navigate to the **DNS Management** section.
+* Update your DNS records (A Records or CNAME) to point to GitHub's servers.
 
-1. Go to your repository **Settings** > **Secrets and variables** > **Actions**.
-2. Click **New repository secret**.
-3. Add the following secrets:
+### 3️⃣ Add CNAME File to Your Repository
+* Create a new file named `CNAME` in the root of your repository.
+* **Important:** Do not add a file extension (like .txt).
+* Add your No-IP domain name as the only content inside the file (e.g., `example.ddns.net`).
 
-| Secret Name | Value |
-| :--- | :--- |
-| `NOIP_USERNAME` | Your No-IP Username or Email |
-| `NOIP_PASSWORD` | Your No-IP Password |
+### 4️⃣ Update GitHub Pages Settings
+* Return to your repository **Settings** > **Pages**.
+* Under the **Custom domain** field, type your No-IP domain.
+* Click **Save**.
 
-### 3. Enable GitHub Actions
-1. Go to the **Actions** tab in your repository.
-2. If prompted, click **"I understand my workflows, go ahead and enable them"**.
-3. Ensure the `noip-renew.yml` (or similar) workflow is present and active.
+### 5️⃣ Wait for DNS Propagation
+* DNS changes can take anywhere from a few minutes up to **24 hours** to propagate globally.
+* Be patient if the site doesn't load immediately.
+
+### 6️⃣ Test Your Configuration
+* Once propagation is complete, visit your No-IP domain in a browser.
+* Verify that your GitHub Pages site loads correctly.
 
 ---
 
-## ⏳ Scheduling
-The workflow is configured to run automatically using a cron schedule.
-By default, it runs **every 15 days** to ensure the 30-day limit is never reached.
+## 🛠️ Troubleshooting
+* **HTTPS Error?** It may take some time for GitHub to generate a certificate. Once available, check "Enforce HTTPS" in settings.
+* **404 Error?** Ensure your `CNAME` file is in the *root* directory, not a subfolder.
 
-You can modify the schedule in `.github/workflows/main.yml`:
-```yaml
-on:
-  schedule:
-    - cron: '0 0 */15 * *' # Runs at 00:00 every 15th day
-  workflow_dispatch:       # Allows manual triggering
+---
+
+<div align="center">
+  <sub>This guide is for educational purposes.</sub>
+</div>
