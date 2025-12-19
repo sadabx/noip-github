@@ -1,0 +1,28 @@
+name: No-IP Auto Renew
+
+on:
+  schedule:
+    - cron: '0 0 */15 * *' # Runs every 15 days at midnight
+  workflow_dispatch:       # Allows you to click "Run" manually to test it
+
+jobs:
+  renew:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Script
+        env:
+          NOIP_USERNAME: ${{ secrets.NOIP_USERNAME }}
+          NOIP_PASSWORD: ${{ secrets.NOIP_PASSWORD }}
+        run: python renew.py
