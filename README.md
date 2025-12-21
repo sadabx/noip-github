@@ -22,7 +22,7 @@ This repository serves two purposes:
 ### 2️⃣ Configure No-IP DNS
 * Log in to [No-IP.com](https://www.noip.com/login).
 * Go to **My Services** > **DNS Records**.
-* Create a **CNAME Record** for your domain (e.g., `sadab.ddns.net`) pointing to `sadabx.github.io`.
+* Create a **CNAME Record** for your domain (e.g., `your-name.ddns.net`) pointing to `your-username.github.io`.
 
 ### 3️⃣ Add CNAME File
 * Create a file named `CNAME` (all caps, no extension) in your repository root.
