@@ -28,7 +28,7 @@ This repository serves two purposes:
 * Create a file named `CNAME` (all caps, no extension) in your repository root.
 * Inside, write **only** your domain name:
   ```text
-  sadab.ddns.net
+  your-name.ddns.net
    ```
    ### 4️⃣ Verify in GitHub
 * Go back to **Settings** > **Pages**.
